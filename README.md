@@ -3,6 +3,10 @@ Settings
 
 YAML based DRY settings manager.
 
+The YAML expansion functionality came about by our getting tired of having to
+create a YAML file and then create an initializer that would expand such file
+and include in our applications.
+
 
 Synopsis
 ========
