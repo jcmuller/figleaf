@@ -80,13 +80,28 @@ describe Figleaf::Settings do
   end
 
   describe "self.load_settings" do
-    it "should load google analytics" do
+    let(:configuration) {
+      {
+        "test" => {
+          "foo" => "bar",
+          "bool_true" => true,
+          "bool_false" => false
+        }
+      }
+    }
+
+    before do
       Dir.should_receive(:glob).and_return(["config/described_class/some_service.yml"])
       described_class.should_receive(:env).and_return("test")
-      YAML.should_receive(:load_file).and_return({"test" => "foo"})
+      YAML.should_receive(:load_file).and_return(configuration)
+
       described_class.load_settings
-      described_class.some_service.should == "foo"
     end
+
+    it "should load some service" do
+      described_class.some_service["foo"].should == "bar"
+    end
+
   end
 
 end
