@@ -1,4 +1,4 @@
-# Settings
+# Figleaf
 
 YAML based DRY settings manager.
 
@@ -10,7 +10,7 @@ and include in our applications.
 
 Add this line to your application's Gemfile:
 
-    gem 'settings'
+    gem 'figleaf'
 
 And then execute:
 
@@ -18,14 +18,14 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install settings
+    $ gem install figleaf
 
 ## Usage
 
 In `application.rb`:
 
 ```
-Settings.configure_with_auto_define do |s|
+Figleaf::Settings.configure_with_auto_define do |s|
   s.env = Rails.env
   s.some_awesome_flag = true
   s.load_settings
@@ -36,7 +36,7 @@ files.
 
 eg: In `production.rb`
 ```
-Settings.configure do |s|
+Figleaf::Settings.configure do |s|
   s.some_awesome_flag = false
 end
 ```
@@ -57,11 +57,11 @@ production:
   foo: foo
 ```
 
-The Settings parser will create a namespace for your YAML file after the file
+The Figleaf::Settings parser will create a namespace for your YAML file after the file
 name.
 
 Then, assuming that you named your YAML file `mysetting.yml`. you can just
-access `foo` as `Settings.mysetting["foo"]`. (Inspired by Rails' `database.yml`,
+access `foo` as `Figleaf::Settings.mysetting["foo"]`. (Inspired by Rails' `database.yml`,
 of course.)
 
 ## Contributing
