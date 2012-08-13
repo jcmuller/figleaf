@@ -1,8 +1,8 @@
-require 'yaml'
 require 'active_support/concern'
-require 'active_support/core_ext/hash'
 require 'active_support/core_ext/class'
+require 'hashie'
 require 'pathname'
+require 'yaml'
 
 module Figleaf
   autoload :Configuration, 'figleaf/configuration'

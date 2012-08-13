@@ -32,15 +32,7 @@ module Figleaf
       end
 
       def define_first_level_methods(property)
-        if property.class == Hash
-          property = HashWithIndifferentAccess.new(property)
-
-          property.each do |key, value|
-            method_name = !!value == value ? :"#{key}?" : key.to_sym
-            property.define_singleton_method(method_name) { value }
-          end
-        end
-
+        return Hashie::Mash.new(property) if property.is_a?(Hash)
         property
       end
     end

@@ -20,4 +20,5 @@ Gem::Specification.new do |gem|
   end
 
   gem.add_dependency("activesupport")
+  gem.add_dependency("hashie")
 end
