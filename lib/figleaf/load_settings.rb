@@ -32,7 +32,7 @@ module Figleaf
       end
 
       def use_hashie_if_hash(property)
-        return Hashie::Mash.new(property) if property.is_a?(Hash)
+        return Figleaf::Fighash.new(property) if property.is_a?(Hash)
         property
       end
     end
