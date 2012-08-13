@@ -1,5 +1,4 @@
-Settings
-========
+# Settings
 
 YAML based DRY settings manager.
 
@@ -7,9 +6,22 @@ The YAML expansion functionality came about by our getting tired of having to
 create a YAML file and then create an initializer that would expand such file
 and include in our applications.
 
+## Installation
 
-Synopsis
-========
+Add this line to your application's Gemfile:
+
+    gem 'settings'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install settings
+
+## Usage
+
 In `application.rb`:
 
 ```
@@ -51,3 +63,11 @@ name.
 Then, assuming that you named your YAML file `mysetting.yml`. you can just
 access `foo` as `Settings.mysetting["foo"]`. (Inspired by Rails' `database.yml`,
 of course.)
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
