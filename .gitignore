@@ -15,7 +15,6 @@
 /spec/tmp/*
 /tmp/*
 /vendor/bundle
-Gemfile.lock
 InstalledFiles
 _yardoc
 capybara-*.html
