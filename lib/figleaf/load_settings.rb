@@ -14,7 +14,7 @@ module Figleaf
         Dir.glob(root.join('config', 'settings', '*.yml')).each do |file|
           property_name = File.basename(file, '.yml')
           property = YAML.load_file(file)[env]
-          property = define_first_level_methods(property)
+          property = use_hashie_if_hash(property)
           self.configure_with_auto_define do |s|
             s.send("#{property_name}=", property)
           end
@@ -31,7 +31,7 @@ module Figleaf
         ENV['ENVIRONMENT']
       end
 
-      def define_first_level_methods(property)
+      def use_hashie_if_hash(property)
         return Hashie::Mash.new(property) if property.is_a?(Hash)
         property
       end
