@@ -102,6 +102,23 @@ describe Figleaf::Settings do
       described_class.some_service["foo"].should == "bar"
     end
 
+    it "should load indifferently the key names" do
+      described_class.some_service["foo"].should == "bar"
+      described_class.some_service[:foo].should == "bar"
+    end
+
+    it "should create foo as a method" do
+      described_class.some_service.foo.should == "bar"
+    end
+
+    it "should create bool_true? and return true" do
+      described_class.some_service.bool_true?.should be_true
+    end
+
+    it "should create bool_false? and return false" do
+      described_class.some_service.bool_false?.should be_false
+    end
+
   end
 
 end

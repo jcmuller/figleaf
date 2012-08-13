@@ -14,6 +14,7 @@ module Figleaf
         Dir.glob(root.join('config', 'settings', '*.yml')).each do |file|
           property_name = File.basename(file, '.yml')
           property = YAML.load_file(file)[env]
+          property = define_first_level_methods(property)
           self.configure_with_auto_define do |s|
             s.send("#{property_name}=", property)
           end
@@ -30,6 +31,18 @@ module Figleaf
         ENV['ENVIRONMENT']
       end
 
+      def define_first_level_methods(property)
+        if property.class == Hash
+          property = HashWithIndifferentAccess.new(property)
+
+          property.each do |key, value|
+            method_name = !!value == value ? :"#{key}?" : key.to_sym
+            property.define_singleton_method(method_name) { value }
+          end
+        end
+
+        property
+      end
     end
   end
 end
