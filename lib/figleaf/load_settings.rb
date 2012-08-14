@@ -1,4 +1,3 @@
-require 'pry'
 module Figleaf
   module LoadSettings
     extend ActiveSupport::Concern
