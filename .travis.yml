@@ -8,3 +8,6 @@ rvm:
   - jruby-head
   - ruby-head
   - rbx-19mode
+notifications:
+  email:
+    - tech@challengepost.com
