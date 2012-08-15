@@ -54,15 +54,49 @@ describe Figleaf::Settings do
       described_class.another_fictional_feature_mode.should eq(:admin)
       described_class.enable_fictional_activity_feed.should be_true
     end
+  end
 
-    it "should define predicate methods" do
+  describe "predicate methods for boolean values" do
+    it "should define predicate methods for true value" do
       described_class.configure_with_auto_define do |s|
         s.some_boolean = true
+      end
+
+      described_class.some_boolean.should be_true
+      described_class.some_boolean?.should be_true
+    end
+
+    it "should define predicate methods for false value" do
+      described_class.configure_with_auto_define do |s|
         s.another_boolean = false
       end
 
-      described_class.some_boolean?.should be_true
+      described_class.another_boolean.should be_false
       described_class.another_boolean?.should be_false
+    end
+
+    it "should not define predicate methods for string value" do
+      described_class.configure_with_auto_define do |s|
+        s.not_a_boolean = "Hello, world!"
+      end
+
+      expect{ described_class.not_a_boolean? }.to raise_error(NoMethodError)
+    end
+
+    it "should define predicate methods for a string that says it's a true value" do
+      described_class.configure_with_auto_define do |s|
+        s.not_a_boolean = "true"
+      end
+
+      expect{ described_class.not_a_boolean? }.to raise_error(NoMethodError)
+    end
+
+    it "should define predicate methods for a list" do
+      described_class.configure_with_auto_define do |s|
+        s.not_a_boolean = %w(1 2 3)
+      end
+
+      expect{ described_class.not_a_boolean? }.to raise_error(NoMethodError)
     end
   end
 
