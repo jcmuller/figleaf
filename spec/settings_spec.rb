@@ -54,6 +54,16 @@ describe Figleaf::Settings do
       described_class.another_fictional_feature_mode.should eq(:admin)
       described_class.enable_fictional_activity_feed.should be_true
     end
+
+    it "should define predicate methods" do
+      described_class.configure_with_auto_define do |s|
+        s.some_boolean = true
+        s.another_boolean = false
+      end
+
+      described_class.some_boolean?.should be_true
+      described_class.another_boolean?.should be_false
+    end
   end
 
   describe "self.configure" do
