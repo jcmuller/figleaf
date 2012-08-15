@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    figleaf (0.0.4)
+    figleaf (0.0.5)
       activesupport
       hashie
 
