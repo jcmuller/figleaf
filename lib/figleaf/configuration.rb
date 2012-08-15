@@ -33,29 +33,24 @@ module Figleaf
 
       def method_missing(method_name, *args)
         if self.auto_define && method_name.to_s =~ /=$/ && args.length == 1
-          arg = args.shift
-          self.define_cattr_methods(method_name)
-          self.define_predicate_cattr_methods(method_name) if !!arg == arg
-          self.send(method_name, arg)
+          value = args.shift
+          self.define_cattr_methods(method_name, value)
+          self.send(method_name, value)
         else
           super
         end
       end
 
-      def define_cattr_methods(method_name)
+      def define_cattr_methods(method_name, value)
         getter_name = method_name.to_s.gsub('=', '')
-
-        cattr_writer getter_name
-        define_singleton_method(getter_name) do
-          result = class_variable_get "@@#{getter_name}"
-          result.respond_to?(:call) ? result.call : result
-        end
+        cattr_writer(getter_name)
+        define_getter_for_variable(getter_name, getter_name)
+        define_getter_for_variable("#{getter_name}?", getter_name) if !!value == value
       end
 
-      def define_predicate_cattr_methods(method_name)
-        getter_name = method_name.to_s.gsub('=', '')
-        define_singleton_method("#{getter_name}?") do
-          result = class_variable_get "@@#{getter_name}"
+      def define_getter_for_variable(getter_name, variable_name)
+        define_singleton_method(getter_name) do
+          result = class_variable_get "@@#{variable_name}"
           result.respond_to?(:call) ? result.call : result
         end
       end
