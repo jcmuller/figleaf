@@ -47,6 +47,8 @@ end
 ```
 etc...
 
+Then, in your app, you can reference `Figleaf::Setting.some_awesome_flag?`.
+
 Also, it provides the ability for you to define all your environment dependent
 settings in just one YAML file inside `config/settings/`. The anatomy of these
 files should be:
