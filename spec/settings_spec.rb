@@ -75,28 +75,28 @@ describe Figleaf::Settings do
       described_class.another_boolean?.should be_false
     end
 
-    it "should not define predicate methods for string value" do
+    it "should evaluate presence predicate methods for string value" do
       described_class.configure_with_auto_define do |s|
         s.not_a_boolean = "Hello, world!"
       end
 
-      expect{ described_class.not_a_boolean? }.to raise_error(NoMethodError)
+      described_class.not_a_boolean?.should be_true
     end
 
-    it "should define predicate methods for a string that says it's a true value" do
+    it "should return false for empty string" do
       described_class.configure_with_auto_define do |s|
-        s.not_a_boolean = "true"
+        s.empty_string = ""
       end
 
-      expect{ described_class.not_a_boolean? }.to raise_error(NoMethodError)
+      described_class.empty_string?.should be_false
     end
 
-    it "should define predicate methods for a list" do
+    it "return true for lists" do
       described_class.configure_with_auto_define do |s|
         s.not_a_boolean = %w(1 2 3)
       end
 
-      expect{ described_class.not_a_boolean? }.to raise_error(NoMethodError)
+      described_class.not_a_boolean?.should be_true
     end
   end
 

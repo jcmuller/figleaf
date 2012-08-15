@@ -32,17 +32,21 @@ module Figleaf
       end
 
       def method_missing(method_name, *args)
-        match = method_name.to_s.match(/(?<name>.*?)(?<modifier>[?=]?)$/)
+        getter_name, modifier = extract_getter_name_and_modifier(method_name)
 
-        if self.auto_define && match[:modifier] == '=' && args.length == 1
-          self.define_cattr_methods(match[:name])
+        if self.auto_define && modifier == '=' && args.length == 1
+          self.define_cattr_methods(getter_name)
           self.send(method_name, args.shift)
-        elsif match[:modifier] == '?' && args.empty?
-          value = self.send(match[:name])
-          !!value == value ? value : super
+        elsif modifier == '?' && args.empty?
+          self.send(getter_name).present?
         else
           super
         end
+      end
+
+      def extract_getter_name_and_modifier(method_name)
+        match = method_name.to_s.match(/(?<name>.*?)(?<modifier>[?=]?)$/)
+        [match[:name], match[:modifier]]
       end
 
       def define_cattr_methods(getter_name)
