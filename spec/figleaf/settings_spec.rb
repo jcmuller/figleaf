@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'figleaf'
 
 describe Figleaf::Settings do
 
