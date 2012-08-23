@@ -10,5 +10,13 @@ module Figleaf
       end
     end
 
+    def to_hash
+      super.tap do |hash|
+        keys = hash.keys
+        keys.each do |key|
+          hash[key.to_sym] = hash.delete(key)
+        end
+      end
+    end
   end
 end
