@@ -29,14 +29,10 @@ describe Figleaf::Configuration do
         described_class.fictional_feature_enabled = :on
         described_class.auto_define = false
       end
-      it "should not auto defined setters and getters" do
-        lambda {
-          described_class.undefined_setting = :raises_error
-        }.should raise_error
 
-        lambda {
-          described_class.undefined_setting
-        }.should raise_error
+      it "should not auto defined setters and getters" do
+        expect { described_class.undefined_setting = :raises_error }.to raise_error
+        expect { described_class.undefined_setting }.to raise_error
       end
 
       it "should set/get previous defined attributes" do
@@ -119,11 +115,11 @@ describe Figleaf::Configuration do
     end
 
     it "should only allow setting of values for previously defined attributes" do
-      lambda {
+      expect {
         described_class.configure do |s|
           s.undefined_setting = :should_raise_error
         end
-      }.should raise_error
+      }.to raise_error
     end
   end
 
