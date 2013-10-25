@@ -4,6 +4,7 @@
 *.sassc
 .bundle
 .config
+.rbx
 .rspec
 .ruby-*
 .sass-cache
