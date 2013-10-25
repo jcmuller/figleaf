@@ -5,6 +5,7 @@
 .bundle
 .config
 .rspec
+.ruby-*
 .sass-cache
 .yardoc
 /.bundle
