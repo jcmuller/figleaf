@@ -1,5 +1,6 @@
 require 'active_support/concern'
 require 'active_support/core_ext/class'
+require "active_support/core_ext/object/blank"
 require 'hashie'
 require 'pathname'
 require 'yaml'
