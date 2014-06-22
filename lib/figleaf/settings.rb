@@ -14,6 +14,14 @@ module Figleaf
         end
       end
 
+      # Public - configure auto defined settings attributes
+      # and load yaml settings from confing/settings directory
+      #
+      def configure!(&block)
+        load_settings
+        configure_with_auto_define(&block)
+      end
+
       def configure_with_auto_define
         self.auto_define.tap do |cached_auto_define|
           self.auto_define = true
