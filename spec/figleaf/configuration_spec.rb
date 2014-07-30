@@ -1,12 +1,6 @@
 require 'spec_helper'
 
-class FigleafConfigurationImplementer
-  include Figleaf::Configuration
-end
-
-describe Figleaf::Configuration do
-  let(:described_class) { FigleafConfigurationImplementer }
-
+describe Figleaf::Settings do
   describe "setters and getters" do
     context "auto define enabled" do
       before(:each) do

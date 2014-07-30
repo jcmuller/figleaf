@@ -1,13 +1,6 @@
 require 'spec_helper'
 
-class FigleafLoadSettingsImplementer
-  include Figleaf::Configuration
-  include Figleaf::LoadSettings
-end
-
-describe Figleaf::LoadSettings do
-  let(:described_class) { FigleafLoadSettingsImplementer }
-
+describe Figleaf::Settings do
   describe "self.load_settings" do
     let(:configuration) {
       {
