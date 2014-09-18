@@ -36,10 +36,10 @@ module Figleaf
       # production:
       #   foo: bar
       # --> Settings.some_service.foo = bar
-      def load_settings
-        Dir.glob(root.join('config', 'settings', '*.yml')).each do |file|
+      def load_settings(file_pattern = default_file_pattern, env_to_load = env)
+        Dir.glob(file_pattern).each do |file|
           property_name = File.basename(file, '.yml')
-          property = YAML.load_file(file)[env]
+          property = YAML.load_file(file)[env_to_load]
           property = use_hashie_if_hash(property)
           self.configure_with_auto_define do |s|
             s.send("#{property_name}=", property)
@@ -50,6 +50,10 @@ module Figleaf
       def root
         return Rails.root if defined?(Rails)
         Pathname.new('.')
+      end
+
+      def default_file_pattern
+        root.join('config/settings/*.yml')
       end
 
       def env

@@ -2,22 +2,10 @@ require 'spec_helper'
 
 describe Figleaf::Settings do
   describe "self.load_settings" do
-    let(:configuration) {
-      {
-        "test" => {
-          "foo" => "bar",
-          "bool_true" => true,
-          "bool_false" => false
-        }
-      }
-    }
-
     before do
-      Dir.stub(:glob).and_return(["config/described_class/some_service.yml"])
-      described_class.stub(:env).and_return("test")
-      YAML.stub(:load_file).and_return(configuration)
+      @fixtures_path = File.expand_path("../../fixtures/*.yml", __FILE__)
 
-      described_class.load_settings
+      described_class.load_settings(@fixtures_path, "test")
     end
 
     it "should load some service" do
@@ -42,25 +30,22 @@ describe Figleaf::Settings do
     end
 
     it "should work for arrays as well" do
-      YAML.stub(:load_file).and_return({ "test" => [1, 2] })
       described_class.load_settings
-      described_class.some_service.should == [1, 2]
+      described_class.arrays.should == [1, 2]
     end
 
     it "and for plain strings" do
-      YAML.stub(:load_file).and_return({ "test" => "Hello, World!" })
       described_class.load_settings
-      described_class.some_service.should == "Hello, World!"
+      described_class.strings.should == "Hello, World!"
     end
 
     it "and for booleans (true)" do
-      YAML.stub(:load_file).and_return({ "test" => true })
       described_class.load_settings
-      described_class.some_service.should be_true
+      described_class.booleans.should be_true
     end
 
     it "and for booleans (false)" do
-      YAML.stub(:load_file).and_return({ "test" => false })
+      described_class.load_settings(@fixtures_path, "alt")
       described_class.load_settings
       described_class.some_service.should be_false
     end
