@@ -37,14 +37,20 @@ module Figleaf
       #   foo: bar
       # --> Settings.some_service.foo = bar
       def load_settings(file_pattern = default_file_pattern, env_to_load = env)
-        Dir.glob(file_pattern).each do |file|
-          property_name = File.basename(file, '.yml')
-          property = YAML.load_file(file)[env_to_load]
-          property = use_hashie_if_hash(property)
-          self.configure_with_auto_define do |s|
-            s.send("#{property_name}=", property)
+        configure_with_auto_define do
+          Dir.glob(file_pattern).each do |file|
+            property_name = File.basename(file, '.yml')
+            property      = load_file(file)[env_to_load]
+
+            self.send("#{property_name}=", property)
           end
         end
+      end
+
+      def load_file(file_path, env = nil)
+        property = YAML.load_file(file_path)
+        property = property[env] if env
+        use_hashie_if_hash(property)
       end
 
       def root

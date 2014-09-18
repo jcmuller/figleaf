@@ -1,6 +1,28 @@
 require 'spec_helper'
 
 describe Figleaf::Settings do
+
+  describe "self.load_file" do
+    before do
+      @fixture_path = File.expand_path("../../fixtures/service.yml", __FILE__)
+    end
+
+    it "converts file settings from given env" do
+      settings = described_class.load_file(@fixture_path, "test")
+      settings.foo.should == "bar"
+    end
+
+    it "allows env to be optional" do
+      settings = described_class.load_file(@fixture_path)
+      settings.test.foo.should == "bar"
+    end
+
+    it "returns nil for missing env" do
+      settings = described_class.load_file(@fixture_path, "foo")
+      settings.should be_nil
+    end
+  end
+
   describe "self.load_settings" do
     before do
       @fixtures_path = File.expand_path("../../fixtures/*.yml", __FILE__)
