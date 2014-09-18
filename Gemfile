@@ -15,3 +15,8 @@ group :development do
   gem "ruby_gntp"
   gem "terminal-notifier-guard"
 end
+
+group :development, :test do
+  gem "pry"
+  gem "pry-debugger"
+end

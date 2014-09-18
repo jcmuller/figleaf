@@ -87,6 +87,7 @@ DEPENDENCIES
   guard
   guard-bundler
   guard-rspec
+  pry
   pry-debugger
   rake
   rb-fchange
