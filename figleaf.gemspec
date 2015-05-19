@@ -15,17 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Figleaf::VERSION
 
-  %w(
-    rake
-    rspec
-    pry-debugger
-    guard
-    guard-bundler
-    guard-rspec
-  ).each do |g|
-    gem.add_development_dependency(g)
-  end
-
-  gem.add_dependency("activesupport")
-  gem.add_dependency("hashie")
+  gem.add_dependency "activesupport", ">= 4"
+  gem.add_dependency "hashie", ">= 2"
 end
