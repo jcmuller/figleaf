@@ -72,6 +72,15 @@ describe Figleaf::Settings do
       described_class.service.should be_false
     end
 
+    it "should merge values" do
+      overload = File.expand_path("../../fixtures/extra/*.yml", __FILE__)
+      described_class.load_settings(overload, "test")
+      described_class.service.foo.should eq 'overridden'
+      described_class.service.extra.should eq 'extra'
+      described_class.service.bool_false.should be_false
+      described_class.service.bool_true.should be_true
+    end
+
     it "should raise exception when loading an undefined value" do
       YAML.stub(:load_file).and_return({ "test" => {} })
       described_class.load_settings

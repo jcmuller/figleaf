@@ -14,8 +14,8 @@ group :development do
   gem "rb-inotify", require: false
   gem "ruby_gntp"
   gem "terminal-notifier-guard"
-end
-
-group :development, :test do
+  gem "guard-bundler"
+  gem "guard-rspec"
   gem "pry"
+  gem "pry-debugger", platforms: :ruby_19
 end

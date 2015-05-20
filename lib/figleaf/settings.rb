@@ -42,6 +42,12 @@ module Figleaf
             property_name = File.basename(file, '.yml')
             property      = load_file(file)[env_to_load]
 
+            if self.respond_to?(property_name) &&
+                self.send(property_name).respond_to?(:merge) &&
+                property.respond_to?(:merge)
+              property = self.send(property_name).merge(property)
+            end
+
             self.send("#{property_name}=", property)
           end
         end
