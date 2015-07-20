@@ -40,7 +40,10 @@ module Figleaf
         configure_with_auto_define do
           Dir.glob(file_pattern).each do |file|
             property_name = File.basename(file, '.yml')
-            property      = load_file(file)[env_to_load]
+            yaml_hash     = load_file(file) or next
+            property      = yaml_hash[env_to_load]
+
+            next if property.nil?
 
             if self.respond_to?(property_name) &&
                 self.send(property_name).respond_to?(:merge) &&
