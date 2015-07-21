@@ -9,17 +9,17 @@ describe Figleaf::Settings do
 
     it "converts file settings from given env" do
       settings = described_class.load_file(@fixture_path, "test")
-      settings.foo.should == "bar"
+      expect(settings.foo).to eq("bar")
     end
 
     it "allows env to be optional" do
       settings = described_class.load_file(@fixture_path)
-      settings.test.foo.should == "bar"
+      expect(settings.test.foo).to eq("bar")
     end
 
     it "returns nil for missing env" do
       settings = described_class.load_file(@fixture_path, "foo")
-      settings.should be_nil
+      expect(settings).to eq(nil)
     end
   end
 
@@ -30,62 +30,70 @@ describe Figleaf::Settings do
       described_class.load_settings(@fixtures_path, "test")
     end
 
-    it "should load some service" do
-      described_class.service["foo"].should == "bar"
+    it "load some service" do
+      expect(described_class.service["foo"]).to eq("bar")
     end
 
-    it "should load indifferently the key names" do
-      described_class.service["foo"].should == "bar"
-      described_class.service[:foo].should == "bar"
+    it "load indifferently the key names" do
+      expect(described_class.service["foo"]).to eq("bar")
+      expect(described_class.service[:foo]).to eq("bar")
     end
 
-    it "should create foo as a method" do
-      described_class.service.foo.should == "bar"
+    it "create foo as a method" do
+      expect(described_class.service.foo).to eq("bar")
     end
 
-    it "should create bool_true? and return true" do
-      described_class.service.bool_true?.should be_true
+    it "create bool_true? and return true" do
+      expect(described_class.service.bool_true?).to eq(true)
     end
 
-    it "should create bool_false? and return false" do
-      described_class.service.bool_false?.should be_false
+    it "create bool_false? and return false" do
+      expect(described_class.service.bool_false?).to eq(false)
     end
 
-    it "should work for array as well" do
-      described_class.load_settings
-      described_class.array.should == [1, 2]
+    it "work for array as well" do
+      expect(described_class.array).to eq([1, 2])
     end
 
     it "and for plain string" do
-      described_class.load_settings
-      described_class.string.should == "Hello, World!"
+      expect(described_class.string).to eq("Hello, World!")
     end
 
     it "and for boolean (true)" do
-      described_class.load_settings
-      described_class.boolean.should be_true
+      expect(described_class.boolean).to eq(true)
     end
 
     it "and for boolean (false)" do
       described_class.load_settings(@fixtures_path, "alt")
-      described_class.load_settings
-      described_class.service.should be_false
+      expect(described_class.boolean).to eq(false)
     end
 
-    it "should merge values" do
-      overload = File.expand_path("../../fixtures/extra/*.yml", __FILE__)
-      described_class.load_settings(overload, "test")
-      described_class.service.foo.should eq 'overridden'
-      described_class.service.extra.should eq 'extra'
-      described_class.service.bool_false.should be_false
-      described_class.service.bool_true.should be_true
-    end
-
-    it "should raise exception when loading an undefined value" do
+    it "raise exception when loading an undefined value" do
       YAML.stub(:load_file).and_return({ "test" => {} })
       described_class.load_settings
       expect { described_class.service.blah }.to raise_error NoMethodError
     end
 
+    context "overloading settings" do
+      before do
+        overload = File.expand_path("../../fixtures/extra/*.yml", __FILE__)
+        described_class.load_settings(overload, "test")
+      end
+
+      it "merge values for matching env" do
+        expect(described_class.service.foo).to eq 'overridden'
+        expect(described_class.service.extra).to eq 'extra'
+        expect(described_class.service.bool_false).to eq(false)
+        expect(described_class.service.bool_true).to eq(true)
+      end
+
+      it "not change existing settings for missing env" do
+        expect(described_class.array).to eq([1, 2]) # remains unchanged
+      end
+
+      it "not change settings when overloaded file blank" do
+        expect(described_class.boolean).to eq(true) # remains unchanged
+      end
+    end
   end
 end
