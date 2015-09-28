@@ -1,0 +1,4 @@
+---
+test:
+  foo: <%= ENV['FIGLEAF_TEST_FOO'] %>
+  bar: <%= ENV['FIGLEAF_TEST_BAR'] %>

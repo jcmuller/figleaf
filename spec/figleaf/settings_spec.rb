@@ -68,6 +68,11 @@ describe Figleaf::Settings do
       expect(described_class.boolean).to eq(false)
     end
 
+    it "and for erb values" do
+      expect(described_class.erb.foo).to eq('foo')
+      expect(described_class.erb.bar).to be_nil
+    end
+
     it "raise exception when loading an undefined value" do
       YAML.stub(:load_file).and_return({ "test" => {} })
       described_class.load_settings
