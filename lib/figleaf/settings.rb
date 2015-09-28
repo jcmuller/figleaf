@@ -57,7 +57,7 @@ module Figleaf
       end
 
       def load_file(file_path, env = nil)
-        property = YAML.load_file(file_path)
+        property = YAML.load(ERB.new(IO.read(file_path)).result)
         property = property[env] if env
         use_hashie_if_hash(property)
       end

@@ -5,6 +5,7 @@ require "active_support/core_ext/object/blank"
 require 'hashie'
 require 'pathname'
 require 'yaml'
+require 'erb'
 
 module Figleaf
   autoload :Fighash, 'figleaf/fighash'
