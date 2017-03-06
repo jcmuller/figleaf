@@ -79,6 +79,15 @@ describe Figleaf::Settings do
       expect { described_class.service.blah }.to raise_error NoMethodError
     end
 
+    context "with bad files" do
+      let(:overload) { File.expand_path("../../fixtures/errors/*.yml", __FILE__) }
+
+      it "reports the file that has errors" do
+        expect { described_class.load_settings(overload, "test") }.
+          to raise_error(described_class::InvalidYAML)
+      end
+    end
+
     context "overloading settings" do
       before do
         overload = File.expand_path("../../fixtures/extra/*.yml", __FILE__)
