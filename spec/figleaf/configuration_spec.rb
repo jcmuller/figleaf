@@ -46,7 +46,7 @@ describe Figleaf::Settings do
       end
 
       described_class.another_fictional_feature_mode.should eq(:admin)
-      described_class.enable_fictional_activity_feed.should be_true
+      described_class.enable_fictional_activity_feed.should be true
     end
   end
 
@@ -56,8 +56,8 @@ describe Figleaf::Settings do
         s.some_boolean = true
       end
 
-      described_class.some_boolean.should be_true
-      described_class.some_boolean?.should be_true
+      described_class.some_boolean.should be true
+      described_class.some_boolean?.should be true
     end
 
     it "should define predicate methods for false value" do
@@ -65,8 +65,8 @@ describe Figleaf::Settings do
         s.another_boolean = false
       end
 
-      described_class.another_boolean.should be_false
-      described_class.another_boolean?.should be_false
+      described_class.another_boolean.should be false
+      described_class.another_boolean?.should be false
     end
 
     it "should evaluate presence predicate methods for string value" do
@@ -74,7 +74,7 @@ describe Figleaf::Settings do
         s.not_a_boolean = "Hello, world!"
       end
 
-      described_class.not_a_boolean?.should be_true
+      described_class.not_a_boolean?.should be true
     end
 
     it "should return false for empty string" do
@@ -82,7 +82,7 @@ describe Figleaf::Settings do
         s.empty_string = ""
       end
 
-      described_class.empty_string?.should be_false
+      described_class.empty_string?.should be false
     end
 
     it "return true for lists" do
@@ -90,7 +90,7 @@ describe Figleaf::Settings do
         s.not_a_boolean = %w(1 2 3)
       end
 
-      described_class.not_a_boolean?.should be_true
+      described_class.not_a_boolean?.should be true
     end
   end
 
