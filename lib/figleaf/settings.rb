@@ -1,5 +1,7 @@
 module Figleaf
   class Settings
+    InvalidYAML = Class.new(RuntimeError)
+
     class_attribute :auto_define
     self.auto_define = false
 
@@ -60,6 +62,8 @@ module Figleaf
         property = YAML.load(ERB.new(IO.read(file_path)).result)
         property = property[env] if env
         use_hashie_if_hash(property)
+      rescue Psych::SyntaxError
+        raise InvalidYAML, "#{file_path} has invalid YAML"
       end
 
       def root
