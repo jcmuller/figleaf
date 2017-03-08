@@ -2,9 +2,9 @@
 language: ruby
 bundler_args: --without development
 rvm:
-  - 1.9.3
-  - 2.0.0
   - 2.1.6
+  - 2.2.3
+  - 2.4.0
 notifications:
   email:
-    - tech@challengepost.com
+    - jcmuller@gmail.com
