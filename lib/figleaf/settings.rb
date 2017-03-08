@@ -1,9 +1,9 @@
 module Figleaf
   class Settings
-    class << self
-      class_attribute :auto_define
-      self.auto_define = false
+    class_attribute :auto_define
+    self.auto_define = false
 
+    class << self
       # Public - configure pre-defined attributes
       #
       def configure
