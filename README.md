@@ -1,5 +1,5 @@
 # Figleaf
-[![Build Status](https://secure.travis-ci.org/challengepost/figleaf.png?branch=master)](http://travis-ci.org/challengepost/figleaf)
+[![Build Status](https://secure.travis-ci.org/jcmuller/figleaf.png?branch=master)](http://travis-ci.org/jcmuller/figleaf)
 
 YAML based DRY settings manager.
 

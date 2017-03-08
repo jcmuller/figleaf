@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["jcmuller@gmail.com"]
   gem.description   = %q{YAML based DRY settings manager.}
   gem.summary       = %q{YAML based DRY settings manager.}
-  gem.homepage      = "http://github.com/challengepost/figleaf"
+  gem.homepage      = "http://github.com/jcmuller/figleaf"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
