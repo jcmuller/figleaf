@@ -62,8 +62,8 @@ module Figleaf
         property = YAML.load(ERB.new(IO.read(file_path)).result)
         property = property[env] if env
         use_hashie_if_hash(property)
-      rescue Psych::SyntaxError
-        raise InvalidYAML, "#{file_path} has invalid YAML"
+      rescue Psych::SyntaxError => e
+        raise InvalidYAML, "#{file_path} has invalid YAML\n" + e.message
       end
 
       def root
