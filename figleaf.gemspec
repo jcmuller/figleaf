@@ -15,6 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Figleaf::VERSION
 
-  gem.add_dependency "activesupport", ">= 4"
+  gem.add_dependency "activesupport", ">= 3"
   gem.add_dependency "hashie", ">= 2"
 end
