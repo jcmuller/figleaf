@@ -9,8 +9,6 @@ require 'erb'
 
 module Figleaf
   autoload :Fighash, 'figleaf/fighash'
-  autoload :Configuration, 'figleaf/configuration'
-  autoload :LoadSettings, 'figleaf/load_settings'
   autoload :Settings, 'figleaf/settings'
   autoload :VERSION, 'figleaf/version'
 end
