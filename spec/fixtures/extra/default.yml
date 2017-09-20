@@ -1,0 +1,6 @@
+default:
+  foo: bar
+  bar: baz
+
+test:
+  foo: overriden

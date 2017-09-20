@@ -109,5 +109,20 @@ describe Figleaf::Settings do
         expect(described_class.boolean).to eq(true) # remains unchanged
       end
     end
+
+    context "default is applied" do
+      before do
+        default = File.expand_path("../../fixtures/extra/default.yml", __FILE__)
+        described_class.load_settings(default, "test")
+      end
+
+      it "overrides values" do
+        expect(described_class.default.foo).to eq("overriden")
+      end
+
+      it "respects values set in default" do
+        expect(described_class.default.bar).to eq("baz")
+      end
+    end
   end
 end
