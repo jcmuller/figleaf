@@ -12,10 +12,14 @@ group :development do
   gem "rb-fchange", require: false
   gem "rb-fsevent", require: false
   gem "rb-inotify", require: false
-  gem "ruby_gntp"
-  gem "terminal-notifier-guard"
-  gem "guard-bundler"
-  gem "guard-rspec"
+
+  gem 'guard-bundler', :require => false
+  gem 'guard-livereload', :require => false
+  gem 'guard-rspec', :require => false
+  gem 'libnotify', :require => false # linux notifications
+  gem 'ruby_gntp', :require => false # os x notifications
+  gem "terminal-notifier-guard", :require => false
+
   gem "pry"
   gem "pry-debugger", platforms: :ruby_19
 end
