@@ -41,10 +41,22 @@ module Figleaf
       def load_settings(file_pattern = default_file_pattern, env_to_load = env)
         configure_with_auto_define do
           Dir.glob(file_pattern).each do |file|
-            property_name = File.basename(file, '.yml')
-            yaml_hash     = load_file(file) or next
-            default       = yaml_hash["default"]
-            property      = yaml_hash[env_to_load]
+            property_name, property = nil, nil
+
+            if file.end_with?('.rb')
+              property_name = File.basename(file, '.rb')
+              contents = File.read(file)
+              block = ->(*) { eval contents }
+              config = Config.new.define(&block)
+              default = config["default"]
+              property = config[env_to_load]
+              property = use_hashie_if_hash(property)
+            else
+              property_name = File.basename(file, '.yml')
+              yaml_hash     = load_file(file) or next
+              default       = yaml_hash["default"]
+              property      = yaml_hash[env_to_load]
+            end
 
             property = default.merge(property) if !default.nil?
 
@@ -75,7 +87,8 @@ module Figleaf
       end
 
       def default_file_pattern
-        root.join('config/settings/*.yml')
+        root.join('config/settings/*.yml') +
+          root.join('config/settings/*.rb')
       end
 
       def env

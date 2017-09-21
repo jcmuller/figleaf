@@ -38,7 +38,11 @@ module Figleaf
         if block_given?
           self.class.new.define(&block)
         else
-          args[0]
+          if args.count == 1
+            args[0]
+          else
+            args
+          end
         end
     end
 

@@ -140,4 +140,45 @@ describe Figleaf::Settings do
       end
     end
   end
+
+  context "load ruby files" do
+    before do
+      fixtures_path = File.expand_path("../../fixtures/extra/*.rb", __FILE__)
+      described_class.load_settings(fixtures_path, "test")
+    end
+
+    it "load indifferently the key names" do
+      expect(described_class.code["foo"]).to eq("bar")
+      expect(described_class.code[:foo]).to eq("bar")
+    end
+
+    it "create foo as a method" do
+      expect(described_class.code.foo).to eq("bar")
+    end
+
+    it "create bool_true? and return true" do
+      expect(described_class.code.bool_true?).to eq(true)
+    end
+
+    it "create bool_false? and return false" do
+      expect(described_class.code.bool_false?).to eq(false)
+    end
+
+    it "work for array as well", :aggregate_failures do
+      expect(described_class.code.array).to eq([1, 2, 3, 4])
+      expect(described_class.code.array_alt).to eq([1, 2, 3, 4])
+    end
+
+    it "and for boolean (true)" do
+      expect(described_class.code.bool_true).to eq(true)
+    end
+
+    it "and for boolean (false)" do
+      expect(described_class.code.bool_false).to eq(false)
+    end
+
+    it "and for ENV values" do
+      expect(described_class.code.from_env).to eq('foo')
+    end
+  end
 end
