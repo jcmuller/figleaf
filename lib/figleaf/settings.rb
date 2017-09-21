@@ -48,9 +48,8 @@ module Figleaf
               contents = File.read(file)
               block = ->(*) { eval contents }
               config = Config.new.define(&block)
-              default = config["default"]
-              property = config[env_to_load]
-              property = use_hashie_if_hash(property)
+              default = use_hashie_if_hash(config["default"])
+              property = use_hashie_if_hash(config[env_to_load])
             else
               property_name = File.basename(file, '.yml')
               yaml_hash     = load_file(file) or next

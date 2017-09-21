@@ -6,7 +6,7 @@ module Figleaf
     end
 
     def self.define(property_name, &block)
-      property = new.define(&block)
+      property = new.call(&block)
 
       Settings.configure_with_auto_define do
         if Settings.respond_to?(property_name) &&
@@ -19,7 +19,7 @@ module Figleaf
       end
     end
 
-    def define(&block)
+    def call(&block)
       instance_eval(&block)
 
       property
@@ -36,7 +36,7 @@ module Figleaf
     def process_method(method_name, *args, &block)
       @property[method_name.to_s] =
         if block_given?
-          self.class.new.define(&block)
+          self.class.new.call(&block)
         else
           if args.count == 1
             args[0]
