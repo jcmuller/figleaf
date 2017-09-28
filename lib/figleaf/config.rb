@@ -2,8 +2,7 @@ module Figleaf
   # Convert a ruby block to nested hash
   class Config
     def initialize
-      @property = {}
-    end
+      @property = LazyBlockHash.new
     end
 
     def call(&block)
@@ -23,7 +22,8 @@ module Figleaf
     def process_method(method_name, *args, &block)
       @property[method_name.to_s] =
         if block_given?
-          self.class.new.call(&block)
+          obj = self.class.new
+          Proc.new { obj.call(&block) }
         else
           if args.count == 1
             args[0]
@@ -40,5 +40,16 @@ module Figleaf
     private
 
       attr_reader :property
+  end
+
+  class LazyBlockHash < Hash
+    def [](attr)
+      val = super(attr)
+      if val.is_a?(Proc)
+        val.call
+      else
+        val
+      end
+    end
   end
 end
