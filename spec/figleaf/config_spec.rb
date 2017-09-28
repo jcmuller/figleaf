@@ -4,7 +4,7 @@ module Figleaf
   RSpec.describe Config do
     before do
       Figleaf::Config.define("some_thing") do
-        base "bar"
+        setting_set_on_root "bar"
 
         default do
           foo "bar"
@@ -28,7 +28,7 @@ module Figleaf
     describe "#call" do
       it "lets you configure stuff using code" do
         expect(Settings.some_thing).to eq(
-          "base" => "bar",
+          "setting_set_on_root" => "bar",
           "default" => {
             "foo" => "bar",
             "bar" => "baz",
