@@ -47,7 +47,7 @@ module Figleaf
               property_name = File.basename(file, '.rb')
               contents = File.read(file)
               block = ->(*) { eval contents }
-              config = Config.new.define(&block)
+              config = Config.new.call(&block)
               default = use_hashie_if_hash(config["default"])
               property = use_hashie_if_hash(config[env_to_load])
             else
