@@ -1,6 +1,7 @@
 module Figleaf
   class Settings
     InvalidYAML = Class.new(RuntimeError)
+    InvalidRb = Class.new(RuntimeError)
 
     class_attribute :auto_define
     self.auto_define = false
@@ -41,23 +42,7 @@ module Figleaf
       def load_settings(file_pattern = default_file_pattern, env_to_load = env)
         configure_with_auto_define do
           Dir.glob(file_pattern).each do |file|
-            property_name, property = nil, nil
-
-            if file.end_with?('.rb')
-              property_name = File.basename(file, '.rb')
-              contents = File.read(file)
-              block = ->(*) { eval contents }
-              config = Config.new.call(&block)
-              default = use_hashie_if_hash(config["default"])
-              property = use_hashie_if_hash(config[env_to_load])
-            else
-              property_name = File.basename(file, '.yml')
-              yaml_hash     = load_file(file) or next
-              default       = yaml_hash["default"]
-              property      = yaml_hash[env_to_load]
-            end
-
-            property = default.merge(property) if !default.nil?
+            property_name, property = load_file(file, env_to_load)
 
             next if property.nil?
 
@@ -72,10 +57,34 @@ module Figleaf
         end
       end
 
-      def load_file(file_path, env = nil)
-        property = YAML.load(ERB.new(IO.read(file_path)).result)
-        property = property[env] if env
-        use_hashie_if_hash(property)
+      def load_file(file, env_to_load = env)
+        if file.end_with?('.rb')
+          property_name = File.basename(file, '.rb')
+          config = load_rb_file(file) or return nil
+        else
+          property_name = File.basename(file, '.yml')
+          config = load_yaml_file(file) or return nil
+        end
+
+        return if config.nil?
+
+        default = config["default"]
+        property = config[env_to_load]
+        property = default.merge(property) if !default.nil?
+
+        [property_name, use_hashie_if_hash(property)]
+      end
+
+      def load_rb_file(file_path, env = nil)
+        contents = File.read(file_path)
+        block = ->(*) { eval contents }
+        Config.new.call(&block)
+      rescue SyntaxError => e
+        raise InvalidRb, "#{file_path} has invalid Ruby\n" + e.message
+      end
+
+      def load_yaml_file(file_path)
+        YAML.load(ERB.new(IO.read(file_path)).result)
       rescue Psych::SyntaxError => e
         raise InvalidYAML, "#{file_path} has invalid YAML\n" + e.message
       end

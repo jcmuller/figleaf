@@ -1,28 +1,6 @@
 require 'spec_helper'
 
 describe Figleaf::Settings do
-
-  describe "self.load_file" do
-    before do
-      @fixture_path = File.expand_path("../../fixtures/service.yml", __FILE__)
-    end
-
-    it "converts file settings from given env" do
-      settings = described_class.load_file(@fixture_path, "test")
-      expect(settings.foo).to eq("bar")
-    end
-
-    it "allows env to be optional" do
-      settings = described_class.load_file(@fixture_path)
-      expect(settings.test.foo).to eq("bar")
-    end
-
-    it "returns nil for missing env" do
-      settings = described_class.load_file(@fixture_path, "foo")
-      expect(settings).to eq(nil)
-    end
-  end
-
   describe "self.load_settings" do
     before do
       @fixtures_path = File.expand_path("../../fixtures/*.yml", __FILE__)
@@ -74,17 +52,28 @@ describe Figleaf::Settings do
     end
 
     it "raise exception when loading an undefined value" do
-      YAML.stub(:load_file).and_return({ "test" => {} })
+      YAML.stub(:load_yaml_file).and_return({ "test" => {} })
       described_class.load_settings
       expect { described_class.service.blah }.to raise_error NoMethodError
     end
 
     context "with bad files" do
-      let(:overload) { File.expand_path("../../fixtures/errors/*.yml", __FILE__) }
+      context "yaml" do
+        let(:overload) { File.expand_path("../../fixtures/errors/*.yml", __FILE__) }
 
-      it "reports the file that has errors" do
-        expect { described_class.load_settings(overload, "test") }.
-          to raise_error(described_class::InvalidYAML)
+        it "reports the file that has errors" do
+          expect { described_class.load_settings(overload, "test") }.
+            to raise_error(described_class::InvalidYAML)
+        end
+      end
+
+      context "rb" do
+        let(:overload) { File.expand_path("../../fixtures/errors/*.rb", __FILE__) }
+
+        it "reports the file that has errors" do
+          expect { described_class.load_settings(overload, "test") }.
+            to raise_error(described_class::InvalidRb)
+        end
       end
     end
 
@@ -127,16 +116,16 @@ describe Figleaf::Settings do
 
     context "using default as a YAML anchor is OK" do
       before do
-        default = File.expand_path("../../fixtures/extra/default_anchor.yml", __FILE__)
-        described_class.load_settings(default, "test")
+        default_anchor = File.expand_path("../../fixtures/extra/default_anchor.yml", __FILE__)
+        described_class.load_settings(default_anchor, "test")
       end
 
       it "overrides values" do
-        expect(described_class.default.foo).to eq("overriden")
+        expect(described_class.default_anchor.foo).to eq("overriden")
       end
 
-      it "respects values set in default" do
-        expect(described_class.default.bar).to eq("baz")
+      it "respects values set in default_anchor" do
+        expect(described_class.default_anchor.bar).to eq("baz")
       end
     end
   end
