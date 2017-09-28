@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.2.5 (2017/09/28)
+Add support for `default` options
+
 ## 0.2.4 (2017/08/25)
 Relax active support version dependency
 
