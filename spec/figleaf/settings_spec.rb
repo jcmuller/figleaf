@@ -124,5 +124,20 @@ describe Figleaf::Settings do
         expect(described_class.default.bar).to eq("baz")
       end
     end
+
+    context "using default as a YAML anchor is OK" do
+      before do
+        default = File.expand_path("../../fixtures/extra/default_anchor.yml", __FILE__)
+        described_class.load_settings(default, "test")
+      end
+
+      it "overrides values" do
+        expect(described_class.default.foo).to eq("overriden")
+      end
+
+      it "respects values set in default" do
+        expect(described_class.default.bar).to eq("baz")
+      end
+    end
   end
 end
