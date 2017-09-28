@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.2.6 (2017/09/28)
+Add ability to write config files in ruby
+
 ## 0.2.5 (2017/09/28)
 Add support for `default` options
 
