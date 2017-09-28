@@ -43,7 +43,10 @@ module Figleaf
           Dir.glob(file_pattern).each do |file|
             property_name = File.basename(file, '.yml')
             yaml_hash     = load_file(file) or next
+            default       = yaml_hash["default"]
             property      = yaml_hash[env_to_load]
+
+            property = default.merge(property) if !default.nil?
 
             next if property.nil?
 
