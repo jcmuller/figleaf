@@ -4,19 +4,6 @@ module Figleaf
     def initialize
       @property = {}
     end
-
-    def self.define(property_name, &block)
-      property = new.call(&block)
-
-      Settings.configure_with_auto_define do
-        if Settings.respond_to?(property_name) &&
-            Settings.send(property_name).respond_to?(:merge) &&
-            property.respond_to?(:merge)
-          property = Settings.send(property_name).merge(property)
-        end
-
-        Settings.send("#{property_name}=", property)
-      end
     end
 
     def call(&block)

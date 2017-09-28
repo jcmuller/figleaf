@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module Figleaf
   RSpec.describe Config do
-    before do
-      Figleaf::Config.define("some_thing") do
+    let(:code) do
+      proc do
         setting_set_on_root "bar"
 
         default do
@@ -24,6 +24,8 @@ module Figleaf
         end
       end
     end
+
+    subject(:config) { described_class.new }
 
     describe "#call" do
       it "lets you configure stuff using code" do
