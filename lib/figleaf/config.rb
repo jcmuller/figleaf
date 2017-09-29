@@ -9,6 +9,8 @@ module Figleaf
       instance_eval(&block)
 
       property
+    rescue Exception => e
+      raise Settings::InvalidRb, "Configuration has invalid Ruby\n" + e.message
     end
 
     def method_missing(method_name, *args, &block)
@@ -50,6 +52,8 @@ module Figleaf
       else
         val
       end
+    rescue => e
+      raise Settings::InvalidRb, "Configuration has invalid Ruby\n" + e.message
     end
   end
 end
