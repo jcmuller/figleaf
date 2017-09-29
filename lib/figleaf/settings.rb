@@ -70,7 +70,12 @@ module Figleaf
 
         default = config["default"]
         property = config[env_to_load]
-        property = default.merge(property) if !default.nil?
+
+        if !default.nil? && !property.nil?
+          property = default.merge(property)
+        elsif !default.nil? && property.nil?
+          property = default
+        end
 
         [property_name, use_hashie_if_hash(property)]
       end
