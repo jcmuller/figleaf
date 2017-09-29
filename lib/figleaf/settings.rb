@@ -95,8 +95,7 @@ module Figleaf
       end
 
       def default_file_pattern
-        root.join('config/settings/*.yml') +
-          root.join('config/settings/*.rb')
+        [root.join('config/settings/*.yml'), root.join('config/settings/*.rb')]
       end
 
       def env
