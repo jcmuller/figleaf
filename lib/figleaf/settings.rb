@@ -84,7 +84,7 @@ module Figleaf
       end
 
       def load_yaml_file(file_path)
-        YAML.load(ERB.new(IO.read(file_path)).result)
+        YAML.safe_load(ERB.new(IO.read(file_path)).result, aliases: true)
       rescue Psych::SyntaxError => e
         raise InvalidYAML, "#{file_path} has invalid YAML\n" + e.message
       end

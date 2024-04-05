@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.3.0 (2024/04/05)
+Use YAML.safe_load to support versions of Psych >4
+
 ## 0.2.7, 0.2.8 and 0.2.9 (2017/09/28)
 Bugfixes
 
