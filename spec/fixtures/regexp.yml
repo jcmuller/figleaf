@@ -1,0 +1,2 @@
+default:
+  some_matcher: !ruby/regexp /\Amatcher\z/

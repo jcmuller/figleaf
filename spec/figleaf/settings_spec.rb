@@ -51,6 +51,10 @@ describe Figleaf::Settings do
       expect(described_class.erb.bar).to be_nil
     end
 
+    it "and for regexp values" do
+      expect(described_class.regexp.some_matcher).to eq(/\Amatcher\z/)
+    end
+
     it "raise exception when loading an undefined value" do
       YAML.stub(:load_yaml_file).and_return({"test" => {}})
       described_class.load_settings
@@ -168,6 +172,10 @@ describe Figleaf::Settings do
 
     it "and for ENV values" do
       expect(described_class.code.from_env).to eq("foo")
+    end
+
+    it "and for regexp values" do
+      expect(described_class.regexp.value).to eq(/\Amatcher\z/)
     end
   end
 end
