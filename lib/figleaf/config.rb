@@ -3,8 +3,8 @@ module Figleaf
   class Config
     def initialize = @property = LazyBlockHash.new
 
-    def call(&block)
-      instance_eval(&block)
+    def call(&)
+      instance_eval(&)
 
       property
     rescue => e
@@ -17,15 +17,13 @@ module Figleaf
 
     def process_method(method_name, *args, &block)
       @property[method_name.to_s] =
-        if block_given?
+        if block
           obj = self.class.new
-          Proc.new { obj.call(&block) }
+          proc { obj.call(&block) }
+        elsif args.count == 1
+          args[0]
         else
-          if args.count == 1
-            args[0]
-          else
-            args
-          end
+          args
         end
     end
 
@@ -33,7 +31,7 @@ module Figleaf
 
     private
 
-      attr_reader :property
+    attr_reader :property
   end
 
   class LazyBlockHash < Hash

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Figleaf::Settings do
   describe "self.load_settings" do
@@ -47,12 +47,12 @@ describe Figleaf::Settings do
     end
 
     it "and for erb values" do
-      expect(described_class.erb.foo).to eq('foo')
+      expect(described_class.erb.foo).to eq("foo")
       expect(described_class.erb.bar).to be_nil
     end
 
     it "raise exception when loading an undefined value" do
-      YAML.stub(:load_yaml_file).and_return({ "test" => {} })
+      YAML.stub(:load_yaml_file).and_return({"test" => {}})
       described_class.load_settings
       expect { described_class.service.blah }.to raise_error NoMethodError
     end
@@ -62,8 +62,8 @@ describe Figleaf::Settings do
         let(:overload) { File.expand_path("../../fixtures/errors/*.yml", __FILE__) }
 
         it "reports the file that has errors" do
-          expect { described_class.load_settings(overload, "test") }.
-            to raise_error(described_class::InvalidYAML)
+          expect { described_class.load_settings(overload, "test") }
+            .to raise_error(described_class::InvalidYAML)
         end
       end
 
@@ -71,8 +71,8 @@ describe Figleaf::Settings do
         let(:overload) { File.expand_path("../../fixtures/errors/*.rb", __FILE__) }
 
         it "reports the file that has errors" do
-          expect { described_class.load_settings(overload, "test") }.
-            to raise_error(described_class::InvalidRb)
+          expect { described_class.load_settings(overload, "test") }
+            .to raise_error(described_class::InvalidRb)
         end
       end
     end
@@ -84,8 +84,8 @@ describe Figleaf::Settings do
       end
 
       it "merge values for matching env" do
-        expect(described_class.service.foo).to eq 'overridden'
-        expect(described_class.service.extra).to eq 'extra'
+        expect(described_class.service.foo).to eq "overridden"
+        expect(described_class.service.extra).to eq "extra"
         expect(described_class.service.bool_false).to eq(false)
         expect(described_class.service.bool_true).to eq(true)
       end
@@ -167,7 +167,7 @@ describe Figleaf::Settings do
     end
 
     it "and for ENV values" do
-      expect(described_class.code.from_env).to eq('foo')
+      expect(described_class.code.from_env).to eq("foo")
     end
   end
 end

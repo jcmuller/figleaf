@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Figleaf::Fighash do
   describe "#to_hash" do
@@ -8,18 +8,18 @@ describe Figleaf::Fighash do
 
     context "should have symbols as keys" do
       it "for symbol keys" do
-        subject = described_class.new({ a: :b, c: 1, d: "foo" })
-        subject.to_hash.should == { a: :b, c: 1, d: "foo" }
+        subject = described_class.new({a: :b, c: 1, d: "foo"})
+        subject.to_hash.should == {a: :b, c: 1, d: "foo"}
       end
 
       it "for string keys" do
-        subject = described_class.new({ "a" => :b, "c" => 1, "d" => "foo" })
-        subject.to_hash.should == { a: :b, c: 1, d: "foo" }
+        subject = described_class.new({"a" => :b, "c" => 1, "d" => "foo"})
+        subject.to_hash.should == {a: :b, c: 1, d: "foo"}
       end
 
       it "should have symbols as keys inside two levels" do
-        subject = described_class.new({ a: { b: :d } })
-        subject.to_hash.should == { a: { b: :d } }
+        subject = described_class.new({a: {b: :d}})
+        subject.to_hash.should == {a: {b: :d}}
       end
     end
   end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 module Figleaf
   RSpec.describe Config do
@@ -30,13 +30,13 @@ module Figleaf
     describe "#call" do
       subject(:called) { config.call(&code) }
       it "stores first level keywords as keys" do
-        expect(called.keys).to contain_exactly(*%w(
+        expect(called.keys).to contain_exactly(*%w[
           default
           failer
           production
           setting_set_on_root
           test
-        ))
+        ])
       end
 
       it "expands default" do
