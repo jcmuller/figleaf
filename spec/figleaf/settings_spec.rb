@@ -110,7 +110,7 @@ describe Figleaf::Settings do
       end
 
       it "overrides values" do
-        expect(described_class.default.foo).to eq("overriden")
+        expect(described_class.default.foo).to eq("overridden")
       end
 
       it "respects values set in default" do
@@ -125,7 +125,7 @@ describe Figleaf::Settings do
       end
 
       it "overrides values" do
-        expect(described_class.default_anchor.foo).to eq("overriden")
+        expect(described_class.default_anchor.foo).to eq("overridden")
       end
 
       it "respects values set in default_anchor" do
