@@ -1,7 +1,10 @@
 # Change Log
 
 ## 0.3.0 (2024/04/05)
-Use YAML.safe_load to support versions of Psych >4
+- Use YAML.safe_load to support versions of Psych >4
+- Target modern rubies
+- Take advantage of Ruby 3's single line methods
+- Use standardrb to auto format all files
 
 ## 0.2.7, 0.2.8 and 0.2.9 (2017/09/28)
 Bugfixes
