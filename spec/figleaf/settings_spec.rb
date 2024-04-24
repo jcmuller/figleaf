@@ -56,7 +56,7 @@ describe Figleaf::Settings do
     end
 
     it "raise exception when loading an undefined value" do
-      YAML.stub(:load_yaml_file).and_return({"test" => {}})
+      allow(YAML).to receive(:load_yaml_file).and_return({"test" => {}})
       described_class.load_settings
       expect { described_class.service.blah }.to raise_error NoMethodError
     end
