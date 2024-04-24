@@ -51,8 +51,12 @@ describe Figleaf::Settings do
       expect(described_class.erb.bar).to be_nil
     end
 
+    it "and for regexp values" do
+      expect(described_class.regexp.some_matcher).to eq(/\Amatcher\z/)
+    end
+
     it "raise exception when loading an undefined value" do
-      YAML.stub(:load_yaml_file).and_return({"test" => {}})
+      allow(YAML).to receive(:load_yaml_file).and_return({"test" => {}})
       described_class.load_settings
       expect { described_class.service.blah }.to raise_error NoMethodError
     end
@@ -106,7 +110,7 @@ describe Figleaf::Settings do
       end
 
       it "overrides values" do
-        expect(described_class.default.foo).to eq("overriden")
+        expect(described_class.default.foo).to eq("overridden")
       end
 
       it "respects values set in default" do
@@ -121,12 +125,23 @@ describe Figleaf::Settings do
       end
 
       it "overrides values" do
-        expect(described_class.default_anchor.foo).to eq("overriden")
+        expect(described_class.default_anchor.foo).to eq("overridden")
       end
 
       it "respects values set in default_anchor" do
         expect(described_class.default_anchor.bar).to eq("baz")
       end
+    end
+  end
+
+  context "load yaml files" do
+    before do
+      fixtures_path = File.expand_path("../../fixtures/*.yaml", __FILE__)
+      described_class.load_settings(fixtures_path, "test")
+    end
+
+    it "reads them just fine" do
+      expect(described_class.yaml.works).to eq("here")
     end
   end
 
@@ -168,6 +183,10 @@ describe Figleaf::Settings do
 
     it "and for ENV values" do
       expect(described_class.code.from_env).to eq("foo")
+    end
+
+    it "and for regexp values" do
+      expect(described_class.regexp.value).to eq(/\Amatcher\z/)
     end
   end
 end

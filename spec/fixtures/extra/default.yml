@@ -3,4 +3,4 @@ default:
   bar: baz
 
 test:
-  foo: overriden
+  foo: overridden

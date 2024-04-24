@@ -4,4 +4,4 @@ default: &default
 
 test:
   <<: *default
-  foo: overriden
+  foo: overridden

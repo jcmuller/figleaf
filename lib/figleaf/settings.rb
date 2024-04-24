@@ -58,11 +58,11 @@ module Figleaf
       end
 
       def load_file(file, env_to_load = env)
+        property_name = File.basename(file, ".*")
+
         if file.end_with?(".rb")
-          property_name = File.basename(file, ".rb")
           config = load_rb_file(file) or return nil
         else
-          property_name = File.basename(file, ".yml")
           config = load_yaml_file(file) or return nil
         end
 
@@ -84,7 +84,7 @@ module Figleaf
       end
 
       def load_yaml_file(file_path)
-        YAML.safe_load(ERB.new(IO.read(file_path)).result, aliases: true)
+        YAML.safe_load(ERB.new(IO.read(file_path)).result, aliases: true, permitted_classes: [Regexp])
       rescue Psych::SyntaxError => e
         raise InvalidYAML, "#{file_path} has invalid YAML\n" + e.message
       end
@@ -95,7 +95,11 @@ module Figleaf
       end
 
       def default_file_pattern
-        [root.join("config/settings/*.yml"), root.join("config/settings/*.rb")]
+        [
+          root.join("config", "settings", "*.yml"),
+          root.join("config", "settings", "*.yaml"),
+          root.join("config", "settings", "*.rb")
+        ]
       end
 
       def env
