@@ -58,11 +58,11 @@ module Figleaf
       end
 
       def load_file(file, env_to_load = env)
+        property_name = File.basename(file, ".*")
+
         if file.end_with?(".rb")
-          property_name = File.basename(file, ".rb")
           config = load_rb_file(file) or return nil
         else
-          property_name = File.basename(file, ".yml")
           config = load_yaml_file(file) or return nil
         end
 
