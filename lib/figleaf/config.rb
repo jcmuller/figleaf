@@ -1,9 +1,7 @@
 module Figleaf
   # Convert a ruby block to nested hash
   class Config
-    def initialize
-      @property = LazyBlockHash.new
-    end
+    def initialize = @property = LazyBlockHash.new
 
     def call(&block)
       instance_eval(&block)
@@ -13,13 +11,9 @@ module Figleaf
       raise Settings::InvalidRb, "Configuration has invalid Ruby\n" + e.message
     end
 
-    def method_missing(method_name, *args, &block)
-      process_method(method_name, *args, &block)
-    end
+    def method_missing(method_name, *, &) = process_method(method_name, *, &)
 
-    def test(&block)
-      process_method(:test, [], &block)
-    end
+    def test(&) = process_method(:test, [], &)
 
     def process_method(method_name, *args, &block)
       @property[method_name.to_s] =
@@ -35,9 +29,7 @@ module Figleaf
         end
     end
 
-    def respond_to_missing?(method_name, *args)
-      true
-    end
+    def respond_to_missing?(method_name, *args) = true
 
     private
 
