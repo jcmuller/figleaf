@@ -134,6 +134,17 @@ describe Figleaf::Settings do
     end
   end
 
+  context "load yaml files" do
+    before do
+      fixtures_path = File.expand_path("../../fixtures/*.yaml", __FILE__)
+      described_class.load_settings(fixtures_path, "test")
+    end
+
+    it "reads them just fine" do
+      expect(described_class.yaml.works).to eq("here")
+    end
+  end
+
   context "load ruby files" do
     before do
       fixtures_path = File.expand_path("../../fixtures/extra/*.rb", __FILE__)
