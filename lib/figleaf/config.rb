@@ -9,7 +9,7 @@ module Figleaf
       instance_eval(&block)
 
       property
-    rescue Exception => e
+    rescue => e
       raise Settings::InvalidRb, "Configuration has invalid Ruby\n" + e.message
     end
 
