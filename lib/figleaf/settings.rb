@@ -10,7 +10,7 @@ module Figleaf
       # Public - configure pre-defined attributes
       #
       def configure
-        self.auto_define.tap do |cached_auto_define|
+        auto_define.tap do |cached_auto_define|
           self.auto_define = false
           yield self
           self.auto_define = cached_auto_define
@@ -20,13 +20,13 @@ module Figleaf
       # Public - configure auto defined settings attributes
       # and load yaml settings from confing/settings directory
       #
-      def configure!(&block)
+      def configure!(&)
         load_settings
-        configure_with_auto_define(&block)
+        configure_with_auto_define(&)
       end
 
       def configure_with_auto_define
-        self.auto_define.tap do |cached_auto_define|
+        auto_define.tap do |cached_auto_define|
           self.auto_define = true
           yield self
           self.auto_define = cached_auto_define
@@ -46,23 +46,23 @@ module Figleaf
 
             next if property.nil?
 
-            if self.respond_to?(property_name) &&
-                self.send(property_name).respond_to?(:merge) &&
+            if respond_to?(property_name) &&
+                send(property_name).respond_to?(:merge) &&
                 property.respond_to?(:merge)
-              property = self.send(property_name).merge(property)
+              property = send(property_name).merge(property)
             end
 
-            self.send("#{property_name}=", property)
+            send(:"#{property_name}=", property)
           end
         end
       end
 
       def load_file(file, env_to_load = env)
-        if file.end_with?('.rb')
-          property_name = File.basename(file, '.rb')
+        if file.end_with?(".rb")
+          property_name = File.basename(file, ".rb")
           config = load_rb_file(file) or return nil
         else
-          property_name = File.basename(file, '.yml')
+          property_name = File.basename(file, ".yml")
           config = load_yaml_file(file) or return nil
         end
 
@@ -84,23 +84,23 @@ module Figleaf
       end
 
       def load_yaml_file(file_path)
-        YAML.load(ERB.new(IO.read(file_path)).result)
+        YAML.safe_load(ERB.new(IO.read(file_path)).result, aliases: true)
       rescue Psych::SyntaxError => e
         raise InvalidYAML, "#{file_path} has invalid YAML\n" + e.message
       end
 
       def root
         return Rails.root if defined?(Rails)
-        Pathname.new('.')
+        Pathname.new(".")
       end
 
       def default_file_pattern
-        [root.join('config/settings/*.yml'), root.join('config/settings/*.rb')]
+        [root.join("config/settings/*.yml"), root.join("config/settings/*.rb")]
       end
 
       def env
         return Rails.env if defined?(Rails)
-        ENV['ENVIRONMENT']
+        ENV["ENVIRONMENT"]
       end
 
       def use_hashie_if_hash(property)
@@ -109,20 +109,20 @@ module Figleaf
       end
 
       def override_with_local!(local_file)
-        #this file (i.e. test.local.rb) is an optional place to put settings
+        # this file (i.e. test.local.rb) is an optional place to put settings
         local_file.tap do |local_settings_path|
-          eval(IO.read(local_settings_path), binding) if File.exists?(local_settings_path)
+          eval(IO.read(local_settings_path), binding) if File.exist?(local_settings_path)
         end
       end
 
       def method_missing(method_name, *args)
         getter_name, modifier = extract_getter_name_and_modifier(method_name)
 
-        if self.auto_define && modifier == '=' && args.length == 1
-          self.define_cattr_methods(getter_name)
-          self.send(method_name, args.shift)
-        elsif modifier == '?' && args.empty?
-          self.send(getter_name).present?
+        if auto_define && modifier == "=" && args.length == 1
+          define_cattr_methods(getter_name)
+          send(method_name, args.shift)
+        elsif modifier == "?" && args.empty?
+          send(getter_name).present?
         else
           super
         end
@@ -136,11 +136,10 @@ module Figleaf
       def define_cattr_methods(getter_name)
         cattr_writer getter_name
         define_singleton_method(getter_name) do
-          result = class_variable_get "@@#{getter_name}"
+          result = class_variable_get :"@@#{getter_name}"
           result.respond_to?(:call) ? result.call : result
         end
       end
-
     end
   end
 end

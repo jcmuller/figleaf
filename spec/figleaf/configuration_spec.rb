@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Figleaf::Settings do
   describe "setters and getters" do
@@ -87,7 +87,7 @@ describe Figleaf::Settings do
 
     it "return true for lists" do
       described_class.configure_with_auto_define do |s|
-        s.not_a_boolean = %w(1 2 3)
+        s.not_a_boolean = %w[1 2 3]
       end
 
       described_class.not_a_boolean?.should be true
@@ -116,5 +116,4 @@ describe Figleaf::Settings do
       }.to raise_error
     end
   end
-
 end

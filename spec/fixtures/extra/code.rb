@@ -17,5 +17,5 @@ test do
   bool_false false
   array 1, 2, 3, 4
   array_alt [1, 2, 3, 4]
-  from_env ENV['FIGLEAF_TEST_FOO']
+  from_env ENV["FIGLEAF_TEST_FOO"]
 end

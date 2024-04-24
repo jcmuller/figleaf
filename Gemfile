@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gemspec
 
@@ -13,13 +13,15 @@ group :development do
   gem "rb-fsevent", require: false
   gem "rb-inotify", require: false
 
-  gem 'guard-bundler', :require => false
-  gem 'guard-livereload', :require => false
-  gem 'guard-rspec', :require => false
-  gem 'libnotify', :require => false # linux notifications
-  gem 'ruby_gntp', :require => false # os x notifications
-  gem "terminal-notifier-guard", :require => false
+  gem "guard-bundler", require: false
+  gem "guard-livereload", require: false
+  gem "guard-rspec", require: false
+  gem "libnotify", require: false # linux notifications
+  gem "ruby_gntp", require: false # os x notifications
+  gem "terminal-notifier-guard", require: false
 
-  gem "pry"
-  gem "pry-debugger", platforms: :ruby_19
+  gem "pry", require: false
+  gem "pry-byebug", require: false
+
+  gem "standard", require: false
 end

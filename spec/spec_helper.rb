@@ -19,5 +19,5 @@ RSpec.configure do |config|
   config.order = "random"
 end
 
-ENV['FIGLEAF_TEST_FOO'] ||= 'foo'
+ENV["FIGLEAF_TEST_FOO"] ||= "foo"
 # ENV['FIGLEAF_TEST_BAR'] intentionally left blank

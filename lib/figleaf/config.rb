@@ -1,47 +1,37 @@
 module Figleaf
   # Convert a ruby block to nested hash
   class Config
-    def initialize
-      @property = LazyBlockHash.new
-    end
+    def initialize = @property = LazyBlockHash.new
 
-    def call(&block)
-      instance_eval(&block)
+    def call(&)
+      instance_eval(&)
 
       property
-    rescue Exception => e
+    rescue => e
       raise Settings::InvalidRb, "Configuration has invalid Ruby\n" + e.message
     end
 
-    def method_missing(method_name, *args, &block)
-      process_method(method_name, *args, &block)
-    end
+    def method_missing(method_name, *, &) = process_method(method_name, *, &)
 
-    def test(&block)
-      process_method(:test, [], &block)
-    end
+    def test(&) = process_method(:test, [], &)
 
     def process_method(method_name, *args, &block)
       @property[method_name.to_s] =
-        if block_given?
+        if block
           obj = self.class.new
-          Proc.new { obj.call(&block) }
+          proc { obj.call(&block) }
+        elsif args.count == 1
+          args[0]
         else
-          if args.count == 1
-            args[0]
-          else
-            args
-          end
+          args
         end
     end
 
-    def respond_to_missing?(method_name, *args)
-      true
-    end
+    def respond_to_missing?(method_name, *args) = true
 
     private
 
-      attr_reader :property
+    attr_reader :property
   end
 
   class LazyBlockHash < Hash
