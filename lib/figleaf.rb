@@ -10,6 +10,7 @@ require "yaml"
 module Figleaf
   autoload :Config, "figleaf/config"
   autoload :Fighash, "figleaf/fighash"
+  autoload :LazyBlockHash, "figleaf/lazy_block_hash"
   autoload :Settings, "figleaf/settings"
   autoload :VERSION, "figleaf/version"
 end
