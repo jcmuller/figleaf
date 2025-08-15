@@ -85,7 +85,7 @@ module Figleaf
             raise MismatchedTypes, "Error loading file #{file}: mismatch between default values (type #{default.class.name}) and #{env_to_load} (type #{property.class.name})"
           else
             case default
-            when Hash then default.merge(property || {})
+            when Hash then default.deep_merge(property)
             when Array then default + property
             else property
             end

@@ -3,12 +3,19 @@
 require "spec_helper"
 
 describe Figleaf::Settings do
-  describe "self.load_settings" do
-    before do
-      @fixtures_path = File.expand_path("../../fixtures/*.yml", __FILE__)
+  # Force a freshly loaded Figleaf::Settings class on every test run
+  before do
+    Figleaf.send(:remove_const, :Settings) if Figleaf.const_defined?(:Settings)
+    load "lib/figleaf/settings.rb"
+  end
 
-      described_class.load_settings(@fixtures_path, "test")
-    end
+  # Force a new reference to the class
+  subject(:described_class) { Figleaf::Settings }
+
+  describe "self.load_settings" do
+    let(:fixtures_path) { File.expand_path("../../fixtures/*.yml", __FILE__) }
+
+    before { described_class.load_settings(fixtures_path, "test") }
 
     it "load some service" do
       expect(described_class.service["foo"]).to eq("bar")
@@ -44,7 +51,7 @@ describe Figleaf::Settings do
     end
 
     it "and for boolean (false)" do
-      described_class.load_settings(@fixtures_path, "alt")
+      described_class.load_settings(fixtures_path, "alt")
       expect(described_class.boolean).to eq(false)
     end
 
@@ -159,22 +166,68 @@ describe Figleaf::Settings do
     end
   end
 
-  context "load yaml files" do
-    before do
-      fixtures_path = File.expand_path("../../fixtures/*.yaml", __FILE__)
-      described_class.load_settings(fixtures_path, "test")
+  shared_examples_for "merged hashes" do
+    context "when using the default" do
+      before { described_class.load_settings(fixtures_path, "some_env") }
+
+      it "test a non overridden environment" do
+        expect(merged).to match(
+          "leaf1" => "default1",
+          "root1" => {"leaf11" => "default2"},
+          "root2" => {
+            "leaf21" => "default3",
+            "root21" => {
+              "leaf211" => "default4",
+              "root211" => {"leaf2111" => "default5"}
+            }
+          }
+        )
+      end
     end
+
+    context "with an overridden environment" do
+      before { described_class.load_settings(fixtures_path, "overridden") }
+
+      it "merges the values" do
+        expect(merged).to match(
+          "leaf1" => "default1",
+          "leaf2" => "overridden1",
+          "root1" => {"leaf11" => "overridden2"},
+          "root2" => {
+            "leaf21" => "default3",
+            "leaf22" => "overridden3",
+            "root21" => {
+              "leaf211" => "overridden4",
+              "root211" => {
+                "leaf2111" => "default5",
+                "leaf2112" => "overridden5"
+              }
+            }
+          }
+        )
+      end
+    end
+  end
+
+  context "load yaml files" do
+    let(:fixtures_path) { File.expand_path("../../fixtures/**/*.yaml", __FILE__) }
+
+    before { described_class.load_settings(fixtures_path, "test") }
 
     it "reads them just fine" do
       expect(described_class.yaml.works).to eq("here")
     end
+
+    context "hashes are merged" do
+      subject(:merged) { described_class.merged_yaml }
+      it_behaves_like "merged hashes"
+    end
   end
 
   context "load ruby files" do
-    before do
-      fixtures_path = File.expand_path("../../fixtures/extra/*.rb", __FILE__)
-      described_class.load_settings(fixtures_path, "test")
-    end
+    let(:fixtures_path) { File.expand_path("../../fixtures/extra/*.rb", __FILE__) }
+
+    before { described_class.load_settings(fixtures_path, "test") }
 
     it "load indifferently the key names" do
       expect(described_class.code["foo"]).to eq("bar")
@@ -212,6 +265,11 @@ describe Figleaf::Settings do
 
     it "and for regexp values" do
       expect(described_class.regexp.value).to eq(/\Amatcher\z/)
+    end
+
+    context "hashes are merged" do
+      subject(:merged) { described_class.merged_rb }
+      it_behaves_like "merged hashes"
     end
   end
 end
