@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Figleaf
   # Convert a ruby block to nested hash
   class Config

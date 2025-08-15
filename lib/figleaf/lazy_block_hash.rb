@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Figleaf
   class LazyBlockHash < Hash
     def [](attr)

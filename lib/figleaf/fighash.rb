@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Figleaf
   class Fighash < Hashie::Mash
     def method_missing(method_name, *args, &blk)
