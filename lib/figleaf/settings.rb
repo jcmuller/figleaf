@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module Figleaf
   class Settings
     InvalidYAML = Class.new(RuntimeError)
     InvalidRb = Class.new(RuntimeError)
+    MismatchedTypes = Class.new(RuntimeError)
 
     class_attribute :auto_define
     self.auto_define = false
@@ -70,7 +73,23 @@ module Figleaf
 
         default = config["default"]
         property = config[env_to_load]
-        property = default.merge(property || {}) if !default.nil?
+
+        property =
+          if property.nil? && default.nil?
+            return nil
+          elsif property.nil?
+            default
+          elsif default.nil?
+            property
+          elsif default.class.name != property.class.name
+            raise MismatchedTypes, "Error loading file #{file}: mismatch between default values (type #{default.class.name}) and #{env_to_load} (type #{property.class.name})"
+          else
+            case default
+            when Hash then default.deep_merge(property)
+            when Array then default + property
+            else property
+            end
+          end
 
         [property_name, use_hashie_if_hash(property)]
       end
