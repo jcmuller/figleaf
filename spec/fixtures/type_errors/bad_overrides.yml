@@ -1,0 +1,11 @@
+---
+default:
+  foo: bar
+
+array:
+  - foo
+
+string: "HELLO"
+
+bool:
+  true

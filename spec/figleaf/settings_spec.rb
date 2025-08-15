@@ -83,6 +83,29 @@ describe Figleaf::Settings do
       end
     end
 
+    context "incompatible types" do
+      context "bad overrides" do
+        subject(:settings) { described_class.bad_overrides }
+
+        let(:fixtures_path) { File.expand_path("../../fixtures/type_errors/bad_overrides.yml", __FILE__) }
+
+        it "raises an error when overloading a hash with an array" do
+          expect { described_class.load_settings(fixtures_path, "array") }
+            .to raise_error(described_class::MismatchedTypes)
+        end
+
+        it "raises an error when overloading a hash with a string" do
+          expect { described_class.load_settings(fixtures_path, "string") }
+            .to raise_error(described_class::MismatchedTypes)
+        end
+
+        it "raises an error when overloading a hash with a bool" do
+          expect { described_class.load_settings(fixtures_path, "bool") }
+            .to raise_error(described_class::MismatchedTypes)
+        end
+      end
+    end
+
     context "overloading settings" do
       before do
         overload = File.expand_path("../../fixtures/extra/*.yml", __FILE__)
