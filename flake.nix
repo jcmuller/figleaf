@@ -55,6 +55,11 @@
               exec = "bundle exec rspec";
             };
 
+            run-package-artifacts = {
+              description = "run tests";
+              exec = "tar jcvf coverage.tar.bz2 coverage";
+            };
+
             run-lint = {
               description = "ensure files are okay";
               exec = "bundle exec standardrb";

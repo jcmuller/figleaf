@@ -1,0 +1,28 @@
+---
+image: nixos/unstable
+repositories:
+  nixpkgs: https://nixos.org/channels/nixpkgs-unstable
+
+environment:
+  NIX_CONFIG: "experimental-features = nix-command flakes"
+
+sources:
+  - https://git.sr.ht/~jcmuller/figleaf
+
+artifacts:
+  - figleaf/coverage.tar.bz2
+
+tasks:
+  - lint: |
+      cd figleaf
+      nix develop --accept-flake-config --impure --command run-lint
+
+  - tests: |
+      cd figleaf
+      nix develop --accept-flake-config --impure --command run-test
+      nix develop --accept-flake-config --impure --command run-package-artifacts
+
+triggers:
+  - condition: failure
+    action: email
+    to: "Juan C. Müller <figleaf@juancmuller.com>"
