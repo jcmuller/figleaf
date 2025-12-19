@@ -1,0 +1,8 @@
+---
+format: progress
+parallel: true
+ignore:
+  - spec/fixtures/errors/bad_file.rb:
+      - Lint/Syntax
+  - .devenv/**/*
+  - .direnv/**/*

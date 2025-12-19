@@ -6,10 +6,20 @@ module Figleaf
       return super if key?(method_name)
       case method_name
       when /.*?[?=!]$/
-        super(method_name, *args, &blk)
+        super
       else
         raise NoMethodError
       end
+    end
+
+    def respond_to_missing?(method_name, include_all)
+      return super if key?(method_name)
+      case method_name
+      when /.*?[?=!]$/
+        super
+      end
+
+      false
     end
 
     def to_hash

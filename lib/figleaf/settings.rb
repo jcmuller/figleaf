@@ -96,7 +96,9 @@ module Figleaf
 
       def load_rb_file(file_path, env = nil)
         contents = File.read(file_path)
+        # rubocop:disable Security/Eval
         block = ->(*) { eval contents }
+        # rubocop:enable Security/Eval
         Config.new.call(&block)
       rescue SyntaxError => e
         raise InvalidRb, "#{file_path} has invalid Ruby\n" + e.message
@@ -134,7 +136,9 @@ module Figleaf
       def override_with_local!(local_file)
         # this file (i.e. test.local.rb) is an optional place to put settings
         local_file.tap do |local_settings_path|
+          # rubocop:disable Security/Eval
           eval(IO.read(local_settings_path), binding) if File.exist?(local_settings_path)
+          # rubocop:enable Security/Eval
         end
       end
 
@@ -149,6 +153,20 @@ module Figleaf
         else
           super
         end
+      end
+
+      def respond_to_missing?(method_name, include_all)
+        getter_name, modifier = extract_getter_name_and_modifier(method_name)
+
+        if auto_define && modifier == "=" && args.length == 1
+          return true
+        elsif modifier == "?" && args.empty?
+          send(getter_name).present?
+        else
+          super
+        end
+
+        false
       end
 
       def extract_getter_name_and_modifier(method_name)
