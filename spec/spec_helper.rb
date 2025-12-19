@@ -3,6 +3,23 @@
 # Require this file using `require "spec_helper"` to ensure that it is only
 # loaded once.
 
+require "simplecov"
+require "simplecov-cobertura"
+require "simplecov-lcov"
+
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
+SimpleCov::Formatter::LcovFormatter.config.single_report_path = "coverage/coverage.lcov"
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::CoberturaFormatter,
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::LcovFormatter
+])
+
+SimpleCov.start {
+  add_filter(%r{^/spec/})
+  enable_coverage :branch
+}
+
 require "rspec/core"
 require "rspec/mocks"
 require "figleaf"

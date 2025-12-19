@@ -24,4 +24,8 @@ group :development do
   gem "pry-byebug", require: false
 
   gem "standard", require: false
+
+  gem "simplecov-cobertura", require: false
+  gem "simplecov-lcov", require: false
+  gem "simplecov", require: false
 end
